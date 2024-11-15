@@ -51,12 +51,11 @@ static inline int formatNumbers()
 		Number = Number * 10 + (Digits[i] - '0');
 	}
 
-
 	return Number;
 }
 
 
-int Candidates, numElectors, totalVotes, countedVotes, uncountedVotes, voteDifference;
+int Candidates, totalElectors, wonElectors, totalVotes, countedVotes, uncountedVotes, voteDifference;
 vector <Candidate> Data;
 
 void Election(Type x)
@@ -71,17 +70,15 @@ void Election(Type x)
 
 
 
-
-
 	switch(x)
 	{
-		case IndirectPresidental: cout << " ...INDIRECT PRESIDENTAL ELECTION...";	break;
-		case DirectPresidental	: cout << " ...DIRECT PRESIDENTAL ELECTION...";		break;
-		case Parliamentary		: cout << " ...PARLIAMENTARY ELECTION...";			break;
-		case Referendum			: cout << " ...REFERENDUM...";						break;
+		case IndirectPresidental : cout << " ...INDIRECT PRESIDENTAL ELECTION..."; break;
+		case DirectPresidental : cout << " ...DIRECT PRESIDENTAL ELECTION..."; break;
+		case Parliamentary : cout << " ...PARLIAMENTARY ELECTION..."; break;
+		case Referendum : cout << " ...REFERENDUM..."; break;
 	} cout << endl << endl;
 
-	/* Aday sayýsý */
+
 	if (x != Referendum)
 	{
 		cout << (x == Parliamentary ? ParliamentaryDialog[0] : PresidentalDialog[0]);
@@ -90,21 +87,18 @@ void Election(Type x)
 	else
 		Candidates = 2;
 
-	/* Parlamenter baþkanlýk seçimi için koltuk sayýsý */
 	if (x == IndirectPresidental)
 	{
 		cout << PresidentalDialog[1];
-		controlDigits(); numElectors = formatNumbers();
+		controlDigits(); totalElectors = formatNumbers();
 	}
-
 	Step++;
 
-	/* Toplam Oy sayýsý */
 	while(1)
 	{
 		cout << Common[0];
 		controlDigits(); totalVotes = formatNumbers();
-		if (x == IndirectPresidental && totalVotes < numElectors) {
+		if (x == IndirectPresidental && totalVotes < totalElectors) {
 			cout << "\n (ERROR: Total votes cannot be less than the electors.)\n";
 			continue;
 		}
@@ -112,9 +106,9 @@ void Election(Type x)
 	}
 	Step++;
 
+
 	vector <Candidate> Data(Candidates);
 
-	/* Aday/parti/evet&hayýr'ýn aldýðý oy */
 	for (int i = 0; i < Candidates; i++)
 	{
 		if (x != Referendum)
@@ -133,7 +127,7 @@ void Election(Type x)
 		else
 			Data[i].names = ReferendumDialog[i+2];
 
-		while (1)
+		while (countedVotes != totalVotes)
 		{
 			if (x != Referendum)
 				cout << Common[1] << Data[i].names << ": ";
@@ -145,7 +139,7 @@ void Election(Type x)
 
 			if (countedVotes > totalVotes)
 			{
-				cout << " (ERROR: The " << (x == Referendum ? "choices'" : x == Parliamentary ? "parties'" : "candidates'")
+				cout << "\n (ERROR: The " << (x == Referendum ? "choices'" : x == Parliamentary ? "parties'" : "candidates'")
 					 << " total votes cannot exceed the total votes.)\n";
 				countedVotes -= Data[i].votes; continue;
 			}
@@ -155,18 +149,15 @@ void Election(Type x)
 	uncountedVotes = totalVotes - countedVotes;
 	double Percent = 100 * (double)(countedVotes) / totalVotes,
 		   Percent1 = 0;
+
+
+
 	system("cls");
-
-
-	/* Aþama 2:
-	   Aday sayýsý, toplam&sayýlan&sayýlmayan oy
-	*/
 	cout << (x == Parliamentary ? ParliamentaryDialog[2] : PresidentalDialog[3]) << Candidates;
-			(x == IndirectPresidental) ? (cout << PresidentalDialog[4] << numElectors) : (cout << "");
-
-	cout << '\n' << Common[0] << totalVotes
-		 << '\n' << Common[2] << countedVotes << " (" << fixed << setprecision(2) << Percent << "%)"
-		 << '\n' << Common[3] << uncountedVotes << " (" << fixed << setprecision(2) << 100 - Percent << "%)\n";
+			(x == IndirectPresidental) ? (cout << PresidentalDialog[4] << totalElectors) : (cout << "")
+		<< '\n' << Common[0] << totalVotes
+		<< '\n' << Common[2] << countedVotes << " (" << fixed << setprecision(2) << Percent << "%)"
+		<< '\n' << Common[3] << uncountedVotes << " (" << fixed << setprecision(2) << 100 - Percent << "%)\n";
 
 
 	cout << endl << endl << " ...RESULTS...";
@@ -183,8 +174,8 @@ void Election(Type x)
 		cout << "\n " << Data[i].names << ": " << Data[i].votes;
 		if (x == IndirectPresidental)
 		{
-			cout << " (" << (int)((double)Data[i].votes / totalVotes * numElectors)
-				 << "/" << numElectors << ")";
+			wonElectors = (int)((double)Data[i].votes / totalVotes * totalElectors);
+			cout << " (" << wonElectors << "/" << totalElectors << ")";
 		}
 		else
 			cout << " (" << fixed << setprecision(2) << Percent << "%)";
@@ -209,7 +200,8 @@ void Election(Type x)
 
 			if (uncountedVotes == 0)
 			{
-				if (Percent1 > 50)
+				if ( (x == DirectPresidental && Percent1 > 50)
+					|| x == IndirectPresidental && ( (int)(100 * (double)Data[0].votes / totalVotes) > 50) )
 					cout << " " << Data[0].names << " won the election.";
 				else
 					cout << " There is no winner.";
@@ -283,7 +275,7 @@ void Election(Type x)
 			}
 			else cout << " The winner is not definite...";
 		}
-		else /* Referendum */
+		else
 		{
 			if (uncountedVotes == 0 && voteDifference > 0)
 				cout << " The " << Data[0].names << " votes won the referendum.";
