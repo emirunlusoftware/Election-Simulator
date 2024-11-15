@@ -5,12 +5,13 @@ using namespace std;
 
 void MainMenu()
 {
-	cout << " CHOOSE THE ELECTION TYPE\n\n"
-		 << " (1)Indirect Presidental\n"
-		 << " (2)Direct Presidental\n"
-		 << " (3)Parliamentary\n"
-		 << " (4)Referendum\n\n"
-		 << " (E)Exit";
+	cout <<
+	" CHOOSE THE ELECTION TYPE\n\n"
+	" (1)Indirect Presidental\n"
+	" (2)Direct Presidental\n"
+	" (3)Parliamentary\n"
+	" (4)Referendum\n\n"
+	" (E)Exit";
 }
 
 const char* Common[]
