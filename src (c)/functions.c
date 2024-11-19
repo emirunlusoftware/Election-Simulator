@@ -148,25 +148,30 @@ void Election(Type x)
 		else
 			strcpy_s(Data[currentCandidates].names, 75, ReferendumDialog[currentCandidates + 2]);
 
-		while (countedVotes != totalVotes)
+		if (countedVotes != totalVotes)
 		{
-			if (x != Referendum)
-				printf("%s%s: ", Common[1], Data[currentCandidates].names);
-			else
-				printf("%s", ReferendumDialog[currentCandidates]);
-
-			controlDigits();
-			Data[currentCandidates].votes = formatNumbers(); countedVotes += Data[currentCandidates].votes;
-
-			if (countedVotes > totalVotes)
+			while (1)
 			{
-				printf("\n (ERROR: The %s", (x == Referendum ? "choices'" : x == Parliamentary ? "parties'" : "candidates'"));
-				printf(" total votes cannot exceed the total votes.)\n");
-				countedVotes -= Data[currentCandidates].votes; continue;
+				if (x != Referendum)
+					printf("%s%s: ", Common[1], Data[currentCandidates].names);
+				else
+					printf("%s", ReferendumDialog[currentCandidates]);
+
+				controlDigits();
+				Data[currentCandidates].votes = formatNumbers(); countedVotes += Data[currentCandidates].votes;
+
+				if (countedVotes > totalVotes)
+				{
+					printf("\n (ERROR: The %s", (x == Referendum ? "choices'" : x == Parliamentary ? "parties'" : "candidates'"));
+					printf(" total votes cannot exceed the total votes.)\n");
+					countedVotes -= Data[currentCandidates].votes; continue;
+				}
+				break;
 			}
-			break;
 		}
+		else Data[currentCandidates].votes = 0;
 	}
+
 	uncountedVotes = totalVotes - countedVotes;
 	double Percent = 100 * (double)(countedVotes) / totalVotes,
 		   Percent1 = 0;
