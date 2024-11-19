@@ -3,16 +3,18 @@
 using namespace std;
 
 
-void MainMenu()
+inline void MainMenu()
 {
+	system("cls");
 	cout <<
-	" CHOOSE THE ELECTION TYPE\n\n"
-	" (1)Indirect Presidental\n"
-	" (2)Direct Presidental\n"
-	" (3)Parliamentary\n"
-	" (4)Referendum\n\n"
-	" (E)Exit";
+		" CHOOSE THE ELECTION TYPE\n\n"
+		" (1)Indirect Presidental\n"
+		" (2)Direct Presidental\n"
+		" (3)Parliamentary\n"
+		" (4)Referendum\n\n"
+		" (E)Exit";
 }
+
 
 const char* Common[]
 {
@@ -28,7 +30,7 @@ const char* PresidentalDialog[]
 	" Number of Electors: ",
 	" Enter the name of the Candidate ",
 	" Candidates: ",
-	"\n Electors: "
+	" Electors: "
 };
 
 const char* ParliamentaryDialog[]

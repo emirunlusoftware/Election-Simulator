@@ -1,3 +1,4 @@
+#include <string>
 #ifndef main_h
 #define main_h
 using namespace std;
@@ -5,7 +6,7 @@ using namespace std;
 
 struct Candidate
 {
-	int votes = 0;
+	long long votes = 0;
 	string names;
 };
 
@@ -24,9 +25,7 @@ extern const char* ReferendumDialog[];
 
 extern inline int formatNumbers();
 
-extern
-	void
-	Election(Type x),
-	MainMenu();
+extern inline void MainMenu();
+extern void Election(Type x);
 
 #endif

@@ -8,7 +8,6 @@
 using namespace std;
 
 
-
 constexpr int MAX = 9;
 char Digits[MAX], Step;
 int index;
@@ -55,7 +54,8 @@ static inline int formatNumbers()
 }
 
 
-int Candidates, totalElectors, wonElectors, totalVotes, countedVotes, uncountedVotes, voteDifference;
+int Candidates, totalElectors, wonElectors, wonElectors1, countedVotes, uncountedVotes, voteDifference;
+long long totalVotes;
 vector <Candidate> Data;
 
 void Election(Type x)
@@ -113,9 +113,9 @@ void Election(Type x)
 	{
 		if (x != Referendum)
 		{
-			cout << endl;
-			cout << (x == Parliamentary ? ParliamentaryDialog[1] : PresidentalDialog[2])
-				 << i + 1 << ": ";
+			cout << endl
+			<< (x == Parliamentary ? ParliamentaryDialog[1] : PresidentalDialog[2])
+			<< i + 1 << ": ";
 			getline(cin, Data[i].names);
 
 			if (Data[i].names.length() > 75)
@@ -140,7 +140,7 @@ void Election(Type x)
 			if (countedVotes > totalVotes)
 			{
 				cout << "\n (ERROR: The " << (x == Referendum ? "choices'" : x == Parliamentary ? "parties'" : "candidates'")
-					 << " total votes cannot exceed the total votes.)\n";
+				<< " total votes cannot exceed the total votes.)\n";
 				countedVotes -= Data[i].votes; continue;
 			}
 			break;
@@ -151,13 +151,27 @@ void Election(Type x)
 		   Percent1 = 0;
 
 
-
 	system("cls");
-	cout << (x == Parliamentary ? ParliamentaryDialog[2] : PresidentalDialog[3]) << Candidates;
-			(x == IndirectPresidental) ? (cout << PresidentalDialog[4] << totalElectors) : (cout << "")
-		<< '\n' << Common[0] << totalVotes
-		<< '\n' << Common[2] << countedVotes << " (" << fixed << setprecision(2) << Percent << "%)"
-		<< '\n' << Common[3] << uncountedVotes << " (" << fixed << setprecision(2) << 100 - Percent << "%)\n";
+	switch (x)
+	{
+		case IndirectPresidental:
+		case DirectPresidental:
+		{
+			cout << PresidentalDialog[3] << Candidates << endl;
+
+			if (x == IndirectPresidental)
+				cout << PresidentalDialog[4] << totalElectors << endl; break;
+
+			break;
+		}
+		case Parliamentary:
+			cout << ParliamentaryDialog[2] << Candidates << endl; break;
+		case Referendum: break;
+	}
+
+	cout << Common[0] << totalVotes
+	<< '\n' << Common[2] << countedVotes << " (" << fixed << setprecision(2) << Percent << "%)"
+	<< '\n' << Common[3] << uncountedVotes << " (" << fixed << setprecision(2) << 100 - Percent << "%)\n";
 
 
 	cout << endl << endl << " ...RESULTS...";
@@ -167,15 +181,17 @@ void Election(Type x)
 
 	for (int i = 0; i < Candidates; i++)
 	{
-		Percent = 100 * (double)(Data[i].votes) / countedVotes;
-
-		if (i==0) Percent1 = Percent;
-
+		Percent = (countedVotes == 0) ? 0 : 100 * (double)(Data[i].votes) / countedVotes;
 		cout << "\n " << Data[i].names << ": " << Data[i].votes;
+
+		if (i == 0) Percent1 = Percent;
+
 		if (x == IndirectPresidental)
 		{
-			wonElectors = (int)((double)Data[i].votes / totalVotes * totalElectors);
+			wonElectors = (Data[i].votes * totalElectors) / totalVotes;
 			cout << " (" << wonElectors << "/" << totalElectors << ")";
+
+			if (i == 0) wonElectors1 = wonElectors;
 		}
 		else
 			cout << " (" << fixed << setprecision(2) << Percent << "%)";
@@ -186,7 +202,7 @@ void Election(Type x)
 	if (Candidates == 1)
 	{
 		cout << endl << endl << endl
-			 << " " << Data[0].names << " won the election.";
+		<< " " << Data[0].names << " won the election.";
 	}
 
 	else
@@ -201,7 +217,7 @@ void Election(Type x)
 			if (uncountedVotes == 0)
 			{
 				if ( (x == DirectPresidental && Percent1 > 50)
-					|| x == IndirectPresidental && ( (int)(100 * (double)Data[0].votes / totalVotes) > 50) )
+					|| x == IndirectPresidental && (wonElectors1 > totalElectors/2) )
 					cout << " " << Data[0].names << " won the election.";
 				else
 					cout << " There is no winner.";
@@ -247,8 +263,8 @@ void Election(Type x)
 			}
 			else if (voteDifference > uncountedVotes)
 			{
-				cout << " The vote difference between '" << Data[0].names << "' and '" << Data[1].names << "': " << voteDifference;
-				cout << "\n " << Data[0].names << " will definitely win the election";
+				cout << " The vote difference between '" << Data[0].names << "' and '" << Data[1].names << "': " << voteDifference
+				<< "\n " << Data[0].names << " will definitely win the election";
 
 				if (Data[0].votes + uncountedVotes <= (totalVotes / 2))
 				{
@@ -282,8 +298,8 @@ void Election(Type x)
 
 			else if (uncountedVotes < voteDifference)
 			{
-				cout << " The vote difference between '" << Data[0].names << "' and '" << Data[1].names << "': " << voteDifference;
-				cout << '\n' << " The " << Data[0].names << " votes will definitely win the referendum.";
+				cout << " The vote difference between '" << Data[0].names << "' and '" << Data[1].names << "': " << voteDifference
+				<< '\n' << " The " << Data[0].names << " votes will definitely win the referendum.";
 			}
 
 			else cout << " Hard to tell which one will win.";
@@ -291,5 +307,5 @@ void Election(Type x)
 	}
 
 	cout << endl << endl
-		 << " (R)Retry\n (E)Exit";
+	<< " (R)Retry\n (E)Exit";
 }

@@ -1,4 +1,3 @@
-#include <iostream>
 #include <conio.h>
 #include "main.h"
 using namespace std;
@@ -8,7 +7,6 @@ int main() {
 
 	while(1)
 	{
-		system("cls");
 		MainMenu();
 
 		while(1)
