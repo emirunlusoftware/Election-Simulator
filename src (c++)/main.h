@@ -1,6 +1,9 @@
-#include <string>
 #ifndef main_h
 #define main_h
+
+#include <string>
+#include <iostream>
+#include <conio.h>
 using namespace std;
 
 
@@ -18,14 +21,12 @@ enum Type {
 };
 
 
+extern const char* MainMenu[];
 extern const char* Common[];
 extern const char* PresidentalDialog[];
 extern const char* ParliamentaryDialog[];
 extern const char* ReferendumDialog[];
 
-extern inline int formatNumbers();
-
-extern inline void MainMenu();
-extern void Election(Type x);
+void Election(Type x);
 
 #endif
