@@ -1,9 +1,5 @@
-#include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
-#include <conio.h>
 #include <ctype.h>
-#include <locale.h>
 #include "main.h"
 
 #define MAX 9
@@ -33,7 +29,7 @@ static void controlDigits()
 			if ( ( (Step == '1' || Step == '2') && (Digits[index] == '0' && index == 0) ) || (Step == '1' && index > 3) )
 				continue;
 
-			printf("%c",Digits[index]);
+			printf("%c", Digits[index]);
 			index++;
 		}
 	}
@@ -68,8 +64,8 @@ static int Sorting(const void* a, const void* b)
 }
 
 
-int totalElectors, wonElectors, wonElectors1, countedVotes, uncountedVotes, voteDifference,
-Candidates = 0; currentCandidates;
+int totalElectors, wonElectors, wonElectors1, countedVotes, voteDifference,
+Candidates = 0;
 long long totalVotes;
 
 void Election(Type x)
@@ -120,7 +116,7 @@ void Election(Type x)
 	}
 	Step++;
 
-	for (currentCandidates = 0; currentCandidates < Candidates; currentCandidates++)
+	for (int currentCandidates = 0; currentCandidates < Candidates; currentCandidates++)
 	{
 		Data = realloc(Data, (currentCandidates + 1) * sizeof(Candidate));
 		if (Data == NULL) {
@@ -145,8 +141,7 @@ void Election(Type x)
 				currentCandidates--; continue;
 			}
 		}
-		else
-			strcpy_s(Data[currentCandidates].names, 75, ReferendumDialog[currentCandidates + 2]);
+		else strcpy_s(Data[currentCandidates].names, 75, ReferendumDialog[currentCandidates + 2]);
 
 		if (countedVotes != totalVotes)
 		{
@@ -172,9 +167,9 @@ void Election(Type x)
 		else Data[currentCandidates].votes = 0;
 	}
 
-	uncountedVotes = totalVotes - countedVotes;
+	int uncountedVotes = totalVotes - countedVotes;
 	double Percent = 100 * (double)(countedVotes) / totalVotes,
-		   Percent1 = 0;
+	Percent1 = 0;
 
 
 	system("cls");
@@ -216,8 +211,7 @@ void Election(Type x)
 
 			if (i == 0) wonElectors1 = wonElectors;
 		}
-		else
-			printf(" (%.2f%%)", Percent);
+		else printf(" (%.2f%%)", Percent);
 	}
 
 
@@ -246,7 +240,7 @@ void Election(Type x)
 			else if ((totalVotes / 2) > uncountedVotes + Data[0].votes)
 				printf(" No one will win the election.");
 
-			else if ((totalVotes / 2) < uncountedVotes + Data[0].votes && uncountedVotes < (totalVotes / 2))
+			else if ((totalVotes / 2) < uncountedVotes + Data[0].votes && uncountedVotes < (totalVotes / 2) && voteDifference != 0)
 			{
 				if (Data[0].votes > totalVotes / 2)
 					printf(" %s will definitely win election.", Data[0].names);

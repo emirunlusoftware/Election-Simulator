@@ -1,8 +1,5 @@
-#include <iostream>
-#include <conio.h>
 #include <vector>
 #include <algorithm>
-#include <string>
 #include <iomanip>
 #include "main.h"
 using namespace std;
@@ -226,7 +223,7 @@ void Election(Type x)
 			else if ((totalVotes / 2) > uncountedVotes + Data[0].votes)
 				cout << " No one will win the election.";
 
-			else if ((totalVotes / 2) < uncountedVotes + Data[0].votes && uncountedVotes < (totalVotes / 2))
+			else if ((totalVotes / 2) < uncountedVotes + Data[0].votes && uncountedVotes < (totalVotes / 2) && voteDifference != 0)
 			{
 				if (Data[0].votes > totalVotes / 2)
 					cout << " " << Data[0].names << " will definitely win the election.";
@@ -243,7 +240,7 @@ void Election(Type x)
 			if (uncountedVotes == 0)
 			{
 				if (Percent1 > 50)
-					cout << "" << Data[0].names << " won the majority.";
+					cout << " " << Data[0].names << " won the majority.";
 
 				else
 				{
