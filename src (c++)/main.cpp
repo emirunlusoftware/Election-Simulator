@@ -1,13 +1,13 @@
-#include <conio.h>
 #include "main.h"
 using namespace std;
 
 int main() {
-	char Option;
+	unsigned char Option;
 
 	while(1)
 	{
-		MainMenu();
+		system("cls");
+		cout << MainMenu[0];
 
 		while(1)
 		{

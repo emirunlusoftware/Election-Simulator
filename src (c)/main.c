@@ -1,12 +1,12 @@
-#include <conio.h>
 #include "main.h"
 
 int main() {
-	char Option;
+	unsigned char Option;
 
 	while(1)
 	{
-		MainMenu();
+		system("cls");
+		printf(MainMenu[0]);
 
 		while(1)
 		{
